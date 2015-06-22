@@ -6,9 +6,10 @@ class mr::vcsh($url, $home) {
       command => "vcsh clone ${url} mr",
       creates => "${home}/.config/vcsh/repo.d/mr.git",
       require => [Class['vcsh']];
+
     'mr update':
       command     => "mr -d ${home} up",
       refreshonly => true,
-      require     => [Class['mr'], Exec['mr init']];
+      subscribe   => [Class['mr', 'vcsh'], Exec['mr init']];
   }
 }
