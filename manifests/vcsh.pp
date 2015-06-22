@@ -4,9 +4,11 @@ class mr::vcsh($url, $home) {
   exec {
     'mr init':
       command => "vcsh clone ${url} mr",
+      creates => "${home}/.config/vcsh/mr.git",
       require => [Class['vcsh']];
     'mr update':
-      command => "mr -d ${home} up",
-      require => [Class['mr'], Exec['mr init']];
+      command     => "mr -d ${home} up",
+      refreshonly => true,
+      require     => [Class['mr'], Exec['mr init']];
   }
 }
